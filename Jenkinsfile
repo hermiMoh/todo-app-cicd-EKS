@@ -12,14 +12,25 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
-                sh 'echo "=== Environment Variables ==="'
-                sh 'echo "DOCKER_NAMESPACE: ${DOCKER_NAMESPACE}"'
-                sh 'echo "BACKEND_IMAGE: ${BACKEND_IMAGE}"'
-                sh 'echo "FRONTEND_IMAGE: ${FRONTEND_IMAGE}"'
+                sh 'echo "Checking out code..."'
                 sh 'ls -la'
+            }
+        }
+        
+        stage('Build Backend') {
+            steps {
+                dir('backend') {
+                    sh 'echo "=== Building Backend ==="'
+                    sh 'pwd'
+                    sh 'ls -la'
+                    sh '''
+                        echo "Building Docker image..."
+                        docker build -t ${BACKEND_IMAGE}:latest .
+                        docker images | grep todo-backend || echo "No images found"
+                    '''
+                }
             }
         }
     }
 }
-
 
