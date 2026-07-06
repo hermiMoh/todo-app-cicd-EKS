@@ -156,10 +156,6 @@ pipeline {
             }
         }
         
-        stage('Deploy to Development') {
-           echo " deployment with EKS ....."
-            
-        }
     }
     
     post {
