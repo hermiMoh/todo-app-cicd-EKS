@@ -21,12 +21,23 @@ pipeline {
             steps {
                 dir('backend') {
                     sh 'echo "=== Building Backend ==="'
-                    sh 'pwd'
                     sh 'ls -la'
                     sh '''
-                        echo "Building Docker image..."
                         docker build -t ${BACKEND_IMAGE}:latest .
-                        docker images | grep todo-backend || echo "No images found"
+                        docker images | grep todo-backend
+                    '''
+                }
+            }
+        }
+        
+        stage('Build Frontend') {
+            steps {
+                dir('frontend') {
+                    sh 'echo "=== Building Frontend ==="'
+                    sh 'ls -la'
+                    sh '''
+                        docker build -t ${FRONTEND_IMAGE}:latest .
+                        docker images | grep todo-frontend
                     '''
                 }
             }
