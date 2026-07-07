@@ -12,20 +12,16 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
-                sh 'echo "Checking out code..."'
-                sh 'ls -la'
+                sh 'echo "✅ Checkout complete"'
             }
         }
         
         stage('Build Backend') {
             steps {
                 dir('backend') {
-                    sh 'echo "=== Building Backend ==="'
-                    sh 'ls -la'
-                    sh '''
-                        docker build -t ${BACKEND_IMAGE}:latest .
-                        docker images | grep todo-backend
-                    '''
+                    sh 'echo "🔨 Building backend..."'
+                    sh 'docker build -t ${BACKEND_IMAGE}:latest .'
+                    sh 'docker run --rm ${BACKEND_IMAGE}:latest python -c "print(\"Backend works!\")"'
                 }
             }
         }
@@ -33,13 +29,17 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 dir('frontend') {
-                    sh 'echo "=== Building Frontend ==="'
-                    sh 'ls -la'
-                    sh '''
-                        docker build -t ${FRONTEND_IMAGE}:latest .
-                        docker images | grep todo-frontend
-                    '''
+                    sh 'echo "🔨 Building frontend..."'
+                    sh 'docker build -t ${FRONTEND_IMAGE}:latest .'
+                    sh 'docker run --rm ${FRONTEND_IMAGE}:latest ls -la /usr/share/nginx/html'
                 }
+            }
+        }
+        
+        stage('List Images') {
+            steps {
+                sh 'echo "📦 Docker Images:"'
+                sh 'docker images | grep todo'
             }
         }
     }
