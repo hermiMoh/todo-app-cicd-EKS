@@ -3,7 +3,7 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_NAMESPACE = 'hermimoh'
+        DOCKER_NAMESPACE = 'medhermi'
         BACKEND_IMAGE = "${DOCKER_NAMESPACE}/todo-backend"
         FRONTEND_IMAGE = "${DOCKER_NAMESPACE}/todo-frontend"
     }
